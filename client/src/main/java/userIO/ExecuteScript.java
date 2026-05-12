@@ -2,7 +2,7 @@ package userIO;
 
 import communication.CommunicationHandler;
 import shared.commands.CommandEnum;
-import shared.commands.CommandRequest;
+import shared.requests.CommandRequest;
 
 import java.io.File;
 import java.io.FileNotFoundException;

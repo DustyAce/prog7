@@ -13,12 +13,18 @@ public class SegmentationHandler {
     private static final Logger logger = LogManager.getLogger("com.github.dustyace.lab6");
     private static final int segmentSize = 2048;
     public static LinkedList<byte[]> segment(byte[] msg) {
+
         LinkedList<byte[]> ret = new LinkedList<>();
+        if (msg.length<segmentSize) {
+            ret.add(msg);
+            return ret;
+        }
+
         int start = 0;
         while (start < msg.length) {
-            int end = Math.min(start+segmentSize, msg.length);
+            int end = Math.min(start+segmentSize-1, msg.length);
             ret.add(Arrays.copyOfRange(msg, start, end));
-            start += segmentSize;
+            start += segmentSize-1;
         }
         logger.info("Divided message into {} segments", ret.size());
         return ret;

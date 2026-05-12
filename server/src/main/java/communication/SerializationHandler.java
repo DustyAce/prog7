@@ -4,9 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import shared.Request;
-import shared.Response;
-import shared.commands.CommandRequest;
+import shared.requests.Request;
+import shared.responses.Response;
 
 import java.nio.charset.StandardCharsets;
 

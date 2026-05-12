@@ -6,7 +6,7 @@ import java.util.List;
 public class LocalCollectionHandler {
     static HashSet<Long> existingRoutes = new HashSet<>();
 
-    static void updateExistingRoutes( List<Long> al ) {
+    public static void updateExistingRoutes(List<Long> al) {
         existingRoutes.clear();
         existingRoutes.addAll(al);
     }

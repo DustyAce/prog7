@@ -2,9 +2,9 @@ package userIO;
 
 import Exceptions.BadIdException;
 import communication.CommunicationHandler;
-import communication.LocalCollectionHandler;
 import shared.commands.CommandEnum;
-import shared.commands.CommandRequest;
+import shared.requests.CheckRouteExistsRequest;
+import shared.requests.CommandRequest;
 import shared.elements.Route;
 
 import java.util.Arrays;
@@ -51,7 +51,8 @@ public class InputHandler {
     private static void checkRouteIdExists(CommandRequest ret) {
         try {
             Long id = Long.parseLong(ret.getArgs()[0]);
-            if ( !CommunicationHandler.checkRouteExistsRequest(id) ) {
+            CommunicationHandler.request( new CheckRouteExistsRequest(id));
+            if ( !CheckRouteExistsRequest.getResult() ) {
                 System.out.println( "Route does not exist." ); throw new BadIdException("No route with given id");
             }
         } catch (NumberFormatException e) { throw new BadIdException("Invalid id, could not parse to Long"); }

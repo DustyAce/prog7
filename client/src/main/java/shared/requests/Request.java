@@ -1,8 +1,8 @@
-package shared;
+package shared.requests;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import shared.commands.CommandRequest;
+import shared.responses.Response;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes({
@@ -11,4 +11,5 @@ import shared.commands.CommandRequest;
         @JsonSubTypes.Type(value = CheckRouteExistsRequest.class) }
 )
 public abstract class Request {
+    public abstract void processResponse(Response r);
 }

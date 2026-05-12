@@ -6,11 +6,12 @@ import handlers.CollectionHandler;
 import handlers.OutputHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import shared.CheckRouteExistsRequest;
-import shared.Request;
-import shared.Response;
-import shared.commands.CommandRequest;
 import shared.elements.Route;
+import shared.requests.CheckRouteExistsRequest;
+import shared.requests.CommandRequest;
+import shared.requests.Request;
+import shared.responses.CommandResponse;
+import shared.responses.Response;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -64,7 +65,7 @@ public class CommunicationHandler extends Thread {
 
     private static void processCommandRequest(CommandRequest req) throws IOException {
         Invoker.executeCommand(req);
-        Response r = createResponse();
+        Response r = createCommandResponse();
 
         byte[] message = SerializationHandler.serialize_response(r);
         LinkedList<byte[]> segments = SegmentationHandler.segment(message);
@@ -90,9 +91,9 @@ public class CommunicationHandler extends Thread {
         ds.send(dpr);
     }
 
-    private static Response createResponse() {
+    private static Response createCommandResponse() {
         ArrayList<Route> routes = OutputHandler.getRoutes();
-        return new Response(routes, OutputHandler.getMessage());
+        return new CommandResponse(routes, OutputHandler.getMessage());
     }
 
     private static void sendResponse(byte[] message) throws IOException {

@@ -1,7 +1,7 @@
 import Exceptions.BadIdException;
 import communication.CommunicationHandler;
 import shared.commands.CommandEnum;
-import shared.commands.CommandRequest;
+import shared.requests.CommandRequest;
 import userIO.ExecuteScript;
 import userIO.InputHandler;
 

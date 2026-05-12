@@ -1,14 +1,15 @@
-package shared.commands;
+package shared.requests;
 
-import shared.Request;
+import shared.commands.CommandEnum;
 import shared.elements.Route;
+import shared.responses.Response;
 
 public class CommandRequest extends Request {
     CommandEnum command;
     String[] primitiveArgs;
     Route route;
 
-    public CommandRequest(CommandEnum command) { this.command = command; }
+    public CommandRequest() { }
 
     public void setArgs(String[] args) { this.primitiveArgs = args; }
 
@@ -19,4 +20,7 @@ public class CommandRequest extends Request {
     public Route getRoute() { return route; }
 
     public String[] getArgs() { return primitiveArgs; }
+
+    @Override
+    public void processResponse(Response r) {}
 }

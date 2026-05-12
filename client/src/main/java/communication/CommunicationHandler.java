@@ -1,13 +1,15 @@
 package communication;
 
-import shared.CheckRouteExistsRequest;
-import shared.Request;
-import shared.Response;
+import shared.requests.CheckRouteExistsRequest;
+import shared.requests.Request;
+import shared.responses.CommandResponse;
 import shared.commands.CommandEnum;
-import shared.commands.CommandRequest;
+import shared.requests.CommandRequest;
 import shared.elements.Route;
+import shared.responses.Response;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -15,7 +17,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -42,18 +44,7 @@ public class CommunicationHandler {
     static LinkedList<byte[]> responseBuffer = new LinkedList<>();
     static byte[] desegmentedResponse;
 
-    public static boolean checkRouteExistsRequest(Long id) {
-        try {
-            Request req = new CheckRouteExistsRequest(id);
-            establishConnection(req);
-            sendRequest();
-            return receiveCheckRouteResponse();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void request(CommandRequest req) {
+    public static void request(Request req) {
         try {
             establishConnection(req);
             if (!sendRequest()) {return;}
@@ -65,18 +56,17 @@ public class CommunicationHandler {
     }
 
     private static void establishConnection(Request req) throws IOException {
-            host = InetAddress.getLocalHost();
-            addr = new InetSocketAddress(host, port);
-            dc = DatagramChannel.open();
-            dc.configureBlocking(false);
-            selector = Selector.open();
-            dc.register(selector, SelectionKey.OP_READ);
-            message = serializeRequest(req);
-            buf = ByteBuffer.wrap(message);
-            response = new byte[2048];
-            segment_buffer = ByteBuffer.wrap(response);
+        host = InetAddress.getLocalHost();
+        addr = new InetSocketAddress(host, port);
+        dc = DatagramChannel.open();
+        dc.configureBlocking(false);
+        selector = Selector.open();
+        dc.register(selector, SelectionKey.OP_READ);
+        message = serializeRequest(req);
+        buf = ByteBuffer.wrap(message);
+        response = new byte[2048];
+        segment_buffer = ByteBuffer.wrap(response);
     }
-
     private static boolean sendRequest() throws IOException {
         dc.send(buf, addr);
         int attempts = 0;
@@ -92,50 +82,45 @@ public class CommunicationHandler {
         return true;
     }
 
-    private static boolean receiveCheckRouteResponse() throws IOException {
-         ByteBuffer bb = ByteBuffer.allocate(1);
-         dc.receive(bb);
-         return bb.array()[0] == 1;
+    public static void request(CommandRequest req) {
+        try {
+            establishConnection(req);
+            if (!sendRequest()) {return;}
+            receiveResponse();
+            processResponse(req);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
+
+    //recieves and desegments a response, storing the result in desegmentedResponse
+    //bufsize should be the same on client and server
+    private static final int bufsize = 2048;
     private static void receiveResponse() throws IOException {
+        byte[] b = new byte[bufsize];
         responseBuffer.clear();
         dc.register(selector, SelectionKey.OP_WRITE);
         do { //fuckass method doesn't work with 10k elements, need to figue out blocking
-            int i = selector.select();
-            segment_buffer = ByteBuffer.allocate(2048);
+            int i = selector.select(1000);
+            Arrays.fill(b, (byte) -1);
+            segment_buffer = ByteBuffer.wrap(b);
             dc.receive(segment_buffer);
             responseBuffer.add(segment_buffer.array());
-        } while (segment_buffer.array()[0]!=-1);
+        } while (b[bufsize-1] != -1);
         responseBuffer.removeLast();
         desegmentedResponse = SegmentationHandler.desegment(responseBuffer);
+
+
     }
 
-    private static void processResponse(CommandRequest req) throws IOException {
+    public static void processResponse(Request req) throws IOException{
         try {
-
-            Route.isLoading = true;
-            Response resp = deserializeResponse(desegmentedResponse);
-
-            if (!resp.routes().isEmpty() && req.getCommand() != CommandEnum.PSZH)  {
-                resp.routes().forEach(System.out::println);
-            }
-
-            if (!resp.output().isBlank())
-            { System.out.println(resp.output().strip()); }
-
-            Route.updateInstanceCounter( resp.routes().stream()
-                    .mapToLong(Route::getId)
-                    .max()
-                    .orElse(-1) + 1);
-
-            LocalCollectionHandler.updateExistingRoutes( resp.routes().stream()
-                                                                .map(Route::getId)
-                                                                .toList() );
-
+            Response r = SerializationHandler.deserializeResponse(desegmentedResponse);
+            req.processResponse(r);
         } finally {
-            Route.isLoading = false;
             dc.close();
         }
+
     }
 }
