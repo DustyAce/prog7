@@ -1,0 +1,8 @@
+<Route><id>74</id><name>tiny</name><coordinates><x>2</x><y>2.0</y></coordinates><creationDate>2026-04-16T10:56:32.335426882</creationDate><distance>2</distance></Route>
+<Route><id>72</id><name>ITMO 2</name><coordinates><x>9</x><y>9.0</y></coordinates><creationDate>2026-04-16T10:20:03.378422759</creationDate><distance>9</distance></Route>
+<Route><id>71</id><name>ITMO 1</name><coordinates><x>5</x><y>5.0</y></coordinates><creationDate>2026-04-16T10:19:55.911479054</creationDate><distance>5</distance></Route>
+<Route><id>79</id><name>4</name><coordinates><x>4</x><y>4.0</y></coordinates><creationDate>2026-04-25T15:18:39.546807534</creationDate><distance>4</distance></Route>
+<Route><id>76</id><name>BIG</name><coordinates><x>99</x><y>9999.0</y></coordinates><creationDate>2026-04-16T11:06:49.025207307</creationDate><from><x>999999999</x><y>1.0E12</y><z>1.0E8</z><name>HUGEVILLA</name></from><distance>999999999</distance></Route>
+<Route><id>75</id><name>big</name><coordinates><x>9</x><y>9.0</y></coordinates><creationDate>2026-04-16T10:49:54.03595982</creationDate><distance>99999999999</distance></Route>
+<Route><id>77</id><name>a</name><coordinates><x>5</x><y>5.0</y></coordinates><creationDate>2026-04-16T11:07:47.695666068</creationDate><distance>6</distance></Route>
+<Route><id>78</id><name>2</name><coordinates><x>2</x><y>2.0</y></coordinates><creationDate>2026-04-24T15:24:48.215467387</creationDate><from><x/><y>2.0</y><z>22.0</z><name>2</name></from><distance>555</distance></Route>

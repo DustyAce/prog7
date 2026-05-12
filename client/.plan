@@ -1,0 +1,41 @@
+undo:
+Add a void undo() to Command
+ add: would remove the added element
+ add_if_min: either same as add or nothing (if wasnt added)
+ clear: restore collection
+ remove_greater: add all removed elemen,ts back
+ remove: restore element
+ update: swap an element for its' prevoius version(?)
+	 or undo edit via field editing
+
+Object getting:
+add+, add_if_min+, clear, remove_greater
+
+
+problem: storing all removed/added shared.elements along with commands
+-- idea1
+! Store all executed commands in a Stack<HistoryEntry>
+<HistoryEntry> would be a record with (Command c, Route... r) fields
+Whenever undo() is called, move a record from 'history' to 'undoStack'
+and call the Command.undo(Route... r).
+
+## problems
+all commands and CollectionHandler methods are currently void.
+either:
+  1. Rework collectionHandler to return Route[]s
+  2. Move functionality from collectionHandler methods to commands themselves
+
+//this sucks ugh т-т
+
+
+-- idea2
+! keep the base (loaded) state of the collection saved. 
+when undoing a command take the base collection and re-apply all changing commands 
+(listed at the top) (maybe via a script?) without the last one
+
+## problem:
+takes foreverrrrr
+ could add a limit to how many undos are allowed and keep a copy of the collection like 5 steps before. 
+ OR!! could do both (save prime state + 10~ish commands ago) 
+
+//still sucks though, either because of the memory or the limit on undos

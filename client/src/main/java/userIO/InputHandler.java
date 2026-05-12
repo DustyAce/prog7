@@ -1,0 +1,103 @@
+package userIO;
+
+import Exceptions.BadIdException;
+import communication.CommunicationHandler;
+import communication.LocalCollectionHandler;
+import shared.commands.CommandEnum;
+import shared.commands.CommandRequest;
+import shared.elements.Route;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.function.Function;
+
+/**
+ * Class that handles all the input
+ */
+public class InputHandler {
+    public static Scanner sc = new Scanner(System.in);
+    private final static HashSet<CommandEnum> routeCommands = new HashSet<>();
+    static {
+        routeCommands.add(CommandEnum.ADD);
+        routeCommands.add(CommandEnum.ADD_IF_MIN);
+        routeCommands.add(CommandEnum.REMOVE_GREATER);
+        routeCommands.add(CommandEnum.UPDATE);
+    }
+    
+
+    public static CommandRequest commandInput() {
+        System.out.print(">> ");
+        String[] inp = sc.nextLine().strip().split(" ");
+
+        if (inp.length == 0) {return null;}
+        final CommandRequest ret;
+  try { ret = new CommandRequest(CommandEnum.valueOf(inp[0].toUpperCase()));
+        } catch (IllegalArgumentException iae) { return null; }
+
+        ret.setArgs(Arrays.copyOfRange( inp, 1, inp.length ) );
+
+        if ( ret.getCommand() == CommandEnum.UPDATE ) {
+           checkRouteIdExists(ret);
+        }
+
+        if ( routeCommands.contains(ret.getCommand()) ) {
+            ret.setRoute( new Route() );
+        }
+
+        return ret;
+    }
+
+    private static void checkRouteIdExists(CommandRequest ret) {
+        try {
+            Long id = Long.parseLong(ret.getArgs()[0]);
+            if ( !CommunicationHandler.checkRouteExistsRequest(id) ) {
+                System.out.println( "Route does not exist." ); throw new BadIdException("No route with given id");
+            }
+        } catch (NumberFormatException e) { throw new BadIdException("Invalid id, could not parse to Long"); }
+    }
+    /**
+     * Gives the user a [y/n] prompt. N is selected by default.
+     * @param question String printed before the prompt
+     * @return {@code true} if user input was 'y' or 'Y', {@code false} otherwise
+     */
+    public static boolean ynPrompt(String question) {
+        System.out.print(question + " (y/N)\n>>> ");
+        return sc.nextLine().strip().equalsIgnoreCase("y");
+    }
+
+    public static String stringInput(String varName) {
+        return Input(varName, "String", null, s -> s);
+    }
+
+    public static Integer intInput(String varName, InputValidator<Integer> v) {
+        return Input(varName, "int", v, Integer::parseInt);
+    }
+
+    public static Long longInput(String varName, InputValidator<Long> v) {
+        return Input(varName, "long", v, Long::parseLong);
+    }
+
+    private static <T extends Comparable> T Input(String varName, String varType, InputValidator<T> v, Function<String, T> parser) {
+        if (v == null) { v = new InputValidator<>(); }
+        String req = v.request(varType, varName);
+        T n = null;
+        boolean goodInput = false;
+        while (!goodInput) {
+            System.out.print(req);
+            String inp = sc.nextLine();
+            try {
+                if (!inp.isBlank()) {n = parser.apply(inp);}
+                goodInput = v.validate(n);
+            } catch (NumberFormatException e) { System.out.println("Bad input :("); }
+        }
+        return n;
+    }
+
+    public static Float floatInput(String varName, InputValidator<Float> v) {
+        return Input(varName, "float", v, Float::parseFloat);
+    }
+    public static Float floatInput(String varName) {
+        return Input(varName, "float", null, Float::parseFloat);
+    }
+}
