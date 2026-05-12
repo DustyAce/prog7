@@ -8,6 +8,8 @@ public class CommandRequest extends Request {
     CommandEnum command;
     String[] primitiveArgs;
     Route route;
+    String username;
+    String password;
 
     public CommandRequest() { }
 
@@ -20,6 +22,14 @@ public class CommandRequest extends Request {
     public Route getRoute() { return route; }
 
     public String[] getArgs() { return primitiveArgs; }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
     @Override
     public void processResponse(Response r) {}

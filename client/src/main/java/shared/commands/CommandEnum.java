@@ -20,5 +20,8 @@ public enum CommandEnum {
     SHOW,
     UNDO,
     UNIQUE_DISTANCE,
-    UPDATE;
+    UPDATE,
+
+    LOGIN,
+    REGISTER;
 }

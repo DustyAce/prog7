@@ -3,14 +3,15 @@ package userIO;
 import Exceptions.BadIdException;
 import communication.CommunicationHandler;
 import shared.commands.CommandEnum;
-import shared.requests.CheckRouteExistsRequest;
-import shared.requests.CommandRequest;
+import shared.requests.*;
 import shared.elements.Route;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Class that handles all the input
@@ -24,28 +25,38 @@ public class InputHandler {
         routeCommands.add(CommandEnum.REMOVE_GREATER);
         routeCommands.add(CommandEnum.UPDATE);
     }
-    
 
-    public static CommandRequest commandInput() {
+    private final static HashMap<CommandEnum, Supplier<Request>> idfk = new HashMap<>();
+    static {
+        idfk.put(CommandEnum.LOGIN, LoginRequest::new);
+        idfk.put(CommandEnum.REGISTER, RegisterRequest::new);
+    }
+
+
+    public static Request requestInput() {
         System.out.print(">> ");
+
         String[] inp = sc.nextLine().strip().split(" ");
 
         if (inp.length == 0) {return null;}
-        final CommandRequest ret;
-  try { ret = new CommandRequest(CommandEnum.valueOf(inp[0].toUpperCase()));
+        final CommandEnum command;
+        try {
+            command = CommandEnum.valueOf(inp[0].toUpperCase());
         } catch (IllegalArgumentException iae) { return null; }
 
-        ret.setArgs(Arrays.copyOfRange( inp, 1, inp.length ) );
-
-        if ( ret.getCommand() == CommandEnum.UPDATE ) {
-           checkRouteIdExists(ret);
+        if (idfk.containsKey(command)) {
+            return idfk.get(command).get();
+        } else {
+            CommandRequest cr = new CommandRequest(command);
+            cr.setArgs(Arrays.copyOfRange( inp, 1, inp.length ) );
+            if (command==CommandEnum.UPDATE) { checkRouteIdExists(cr); }
+            if ( routeCommands.contains(cr.getCommand()) ) { cr.setRoute( new Route() ); }
+            if (command==CommandEnum.UPDATE) { try {
+                cr.getRoute().setId( Long.parseLong(cr.getArgs()[0]) );
+            } catch (NumberFormatException ignored) {} }
+            return cr;
         }
 
-        if ( routeCommands.contains(ret.getCommand()) ) {
-            ret.setRoute( new Route() );
-        }
-
-        return ret;
     }
 
     private static void checkRouteIdExists(CommandRequest ret) {

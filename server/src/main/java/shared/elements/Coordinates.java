@@ -3,6 +3,9 @@ package shared.elements;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * elements.Coordinates class
@@ -20,10 +23,21 @@ public class Coordinates implements Cloneable, Serializable {
         this.y = c.y;
     }
 
+    public Coordinates(ResultSet rs) throws SQLException {
+        this.x = rs.getInt("c.x");
+        this.y = rs.getFloat("c.y");
+    }
+
     boolean validate() {
         return ( (x != null? x<927 : true)
                 && y != null
                 && y > -974);
+    }
+
+    public void setValuesInStatement(PreparedStatement ps) throws SQLException {
+        ps.clearParameters();
+        ps.setLong(1, x);
+        ps.setFloat(2, y);
     }
 
     @Override

@@ -2,6 +2,7 @@ import Exceptions.BadIdException;
 import communication.CommunicationHandler;
 import shared.commands.CommandEnum;
 import shared.requests.CommandRequest;
+import shared.requests.Request;
 import userIO.ExecuteScript;
 import userIO.InputHandler;
 
@@ -13,14 +14,18 @@ class Main {
         try {
         while (true) {
         try {
-                CommandRequest cr = InputHandler.commandInput();
-                if (cr == null) { System.out.println("No such command. Try 'help'"); continue; }
-                if (cr.getCommand() == CommandEnum.EXIT) {System.out.println("k bye"); System.exit(0);}
-                if (cr.getCommand() == CommandEnum.EXECUTE_SCRIPT) {
-                    ExecuteScript.execute( new File(cr.getArgs()[0]) );
-                    continue;
+                Request req = InputHandler.requestInput();
+                if (req == null) { System.out.println("No such command. Try 'help'"); continue; }
+
+                if (req instanceof CommandRequest cr) {
+                    if (cr.getCommand() == CommandEnum.EXIT) {System.out.println("k bye"); System.exit(0);}
+                    if (cr.getCommand() == CommandEnum.EXECUTE_SCRIPT) {
+                        ExecuteScript.execute( new File(cr.getArgs()[0]) );
+                        continue;
+                    }
+                    //System.out.println(cr.getUsername());
                 }
-                CommunicationHandler.request(cr);
+                CommunicationHandler.request(req);
         }
         catch (BadIdException e) { System.out.println("Bad argument"); }
         } } catch (NoSuchElementException e) {System.out.println("got it!");}

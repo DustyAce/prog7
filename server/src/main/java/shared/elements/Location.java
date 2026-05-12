@@ -3,6 +3,8 @@ package shared.elements;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  * elements.Location class
@@ -26,11 +28,26 @@ public class Location implements Cloneable, Serializable {
         this.name = l.name;
     }
 
+    public Location(Long x, Float y, Float z, String name) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.name = name;
+    }
+
     boolean validate() {
         return (y != null
                 && z != null
                 && name != null
                 && !name.isBlank());
+    }
+
+    public void setValuesInStatement(PreparedStatement ps) throws SQLException {
+        ps.clearParameters();
+        ps.setLong(1, x);
+        ps.setFloat(2, y);
+        ps.setFloat(3, z);
+        ps.setString(4, name);
     }
 
     @Override

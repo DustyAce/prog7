@@ -7,8 +7,10 @@ import shared.responses.Response;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = CommandRequest.class),
+        @JsonSubTypes.Type(value = CheckRouteExistsRequest.class),
+        @JsonSubTypes.Type(value = RegisterRequest.class),
+        @JsonSubTypes.Type(value = LoginRequest.class) }
 
-        @JsonSubTypes.Type(value = CheckRouteExistsRequest.class) }
 )
 public abstract class Request {
     public abstract void processResponse(Response r);

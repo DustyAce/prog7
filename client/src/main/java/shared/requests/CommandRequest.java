@@ -1,6 +1,7 @@
 package shared.requests;
 
 import communication.LocalCollectionHandler;
+import communication.UserStatus;
 import shared.commands.CommandEnum;
 import shared.elements.Route;
 import shared.responses.CommandResponse;
@@ -12,8 +13,14 @@ public class CommandRequest extends Request {
     CommandEnum command;
     String[] primitiveArgs;
     Route route;
+    private String username;
+    private String password;
 
-    public CommandRequest(CommandEnum command) { this.command = command; }
+    public CommandRequest(CommandEnum command) {
+        this.command = command;
+        this.username = UserStatus.getUsername();
+        this.password = UserStatus.getPassword();
+    }
 
     public void setArgs(String[] args) { this.primitiveArgs = args; }
 
@@ -48,5 +55,13 @@ public class CommandRequest extends Request {
         } finally {
             Route.isLoading = false;
         }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

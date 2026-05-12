@@ -1,6 +1,7 @@
 package communication;
 
 import shared.requests.CheckRouteExistsRequest;
+import shared.requests.LoginRequest;
 import shared.requests.Request;
 import shared.responses.CommandResponse;
 import shared.commands.CommandEnum;
@@ -46,6 +47,17 @@ public class CommunicationHandler {
 
     public static void request(Request req) {
         try {
+            if (!(UserStatus.isLoggedIn() || req instanceof LoginRequest)) {
+                System.out.println("Not logged in! Use 'login' or 'register'.");
+                return;
+            }
+//            else if (req instanceof LoginRequest && UserStatus.isLoggedIn()) {
+//                System.out.println("Already logged in!");
+//                return;
+//            }
+//OPTIONAL: unallow re-logging in.
+// ! locks the session if credentials become invalid after user is already logged in.
+            
             establishConnection(req);
             if (!sendRequest()) {return;}
             receiveResponse();
@@ -108,10 +120,7 @@ public class CommunicationHandler {
             dc.receive(segment_buffer);
             responseBuffer.add(segment_buffer.array());
         } while (b[bufsize-1] != -1);
-        responseBuffer.removeLast();
         desegmentedResponse = SegmentationHandler.desegment(responseBuffer);
-
-
     }
 
     public static void processResponse(Request req) throws IOException{

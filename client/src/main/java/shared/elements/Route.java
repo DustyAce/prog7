@@ -67,6 +67,10 @@ public class Route implements Comparable<Route>, Cloneable{
         this.distance = r.distance;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public boolean validate() {
         boolean r = (id != null
                 && !name.isBlank()

@@ -3,13 +3,13 @@ package communication;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import commands.meta.Invoker;
 import handlers.CollectionHandler;
+import handlers.DatabaseHandler;
 import handlers.OutputHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import shared.elements.Route;
-import shared.requests.CheckRouteExistsRequest;
-import shared.requests.CommandRequest;
-import shared.requests.Request;
+import shared.requests.*;
+import shared.responses.BooleanResponse;
 import shared.responses.CommandResponse;
 import shared.responses.Response;
 
@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class CommunicationHandler extends Thread {
@@ -50,8 +51,10 @@ public class CommunicationHandler extends Thread {
             if (req instanceof CheckRouteExistsRequest) {
                 processCheckRouteExistsRequest( (CheckRouteExistsRequest) req);
                 return;
+            } else if (req instanceof LoginRequest lr) {
+                processLoginRequest(lr);
+                return;
             }
-
             processCommandRequest( (CommandRequest) req);
         } catch (JsonProcessingException jpe) {
             logger.error("Request couldn't be deserialized");
@@ -64,7 +67,12 @@ public class CommunicationHandler extends Thread {
     }
 
     private static void processCommandRequest(CommandRequest req) throws IOException {
-        Invoker.executeCommand(req);
+        if (DatabaseHandler.checkUser(req.getUsername(), req.getPassword())) {
+            Invoker.executeCommand(req);
+        } else {
+            OutputHandler.message("Bad credentials!");
+        }
+
         Response r = createCommandResponse();
 
         byte[] message = SerializationHandler.serialize_response(r);
@@ -74,9 +82,19 @@ public class CommunicationHandler extends Thread {
             sendResponse(seg);
             logger.debug("seg.length: {}", seg.length);
         }
-        DatagramPacket dpr = new DatagramPacket(new byte[]{-1}, 1, dp.getAddress(), dp.getPort());
-        ds.send(dpr);
+//        DatagramPacket dpr = new DatagramPacket(new byte[]{-1}, 1, dp.getAddress(), dp.getPort());
+//        ds.send(dpr);
         logger.info("Sent response.");
+    }
+
+    private static void processLoginRequest(LoginRequest lr) throws IOException{
+        BooleanResponse resp = new BooleanResponse();
+        if (DatabaseHandler.checkUser(lr.getUsername(), lr.getPassword()) ) {
+            resp.setStatus(true);
+        } else if (lr instanceof RegisterRequest && DatabaseHandler.registerUser(lr.getUsername(), lr.getPassword())) {
+            resp.setStatus(true);
+        } else {resp.setStatus(false);}
+        sendResponse( SerializationHandler.serialize_response(resp) );
     }
 
     private static void processCheckRouteExistsRequest(CheckRouteExistsRequest req) throws IOException {

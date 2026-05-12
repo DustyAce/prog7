@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0a642078-636c-4b12-b011-381131434455" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../server/src/main/java/handlers/DatabaseHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../server/src/main/java/shared/requests/LoginRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../server/src/main/java/shared/requests/RegisterRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../server/src/main/java/shared/responses/BooleanResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/communication/CommunicationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communication/CommunicationHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/communication/SerializationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communication/SerializationHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/shared/commands/CommandEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/commands/CommandEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/shared/elements/Route.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/elements/Route.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/shared/requests/CommandRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/requests/CommandRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/shared/requests/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/requests/Request.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/shared/responses/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/responses/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userIO/ExecuteScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/userIO/ExecuteScript.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userIO/InputHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/userIO/InputHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/save" beforeDir="false" afterPath="$PROJECT_DIR$/../server/save" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/LoginCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/RegisterCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/communication/CommunicationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/communication/CommunicationHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/shared/elements/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/shared/elements/Coordinates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/shared/elements/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/shared/elements/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/shared/elements/Route.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/shared/elements/Route.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/shared/requests/CommandRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/shared/requests/CommandRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/shared/requests/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/shared/requests/Request.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/shared/responses/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/shared/responses/Response.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTTP Private Environment File" />
+        <option value="Record" />
+        <option value="Exception" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="39qYWccvFzHK5dp09pLMF2R2F0h" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Cli-7.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.lab5.executor": "Run",
+    "Application.lab6-cli.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "TestNG.TestSuite.executor": "Run",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/dusty/ITMO/prog/lab7-new/client",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "configurable.group.build"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="java" />
+      <recent name="" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/Communication" />
+      <recent name="$PROJECT_DIR$/src/main/java/shared" />
+      <recent name="$PROJECT_DIR$/src/main/java" />
+      <recent name="$PROJECT_DIR$/scripts" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src/main/java" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="shared" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Cli-7">
+    <configuration name="Cli-7" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="client" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestSuite" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="lab5" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestSuite" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Cli-7" />
+      <item itemvalue="TestNG.TestSuite" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="TestNG.TestSuite" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0a642078-636c-4b12-b011-381131434455" name="Changes" comment="" />
+      <created>1771425103359</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1771425103359</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" log-message="true" suspend="NONE" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/shared/elements/Route.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="routeUndone" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
