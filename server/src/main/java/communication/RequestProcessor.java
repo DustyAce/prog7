@@ -14,6 +14,7 @@ import shared.responses.Response;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
@@ -22,12 +23,14 @@ import java.util.concurrent.Executors;
 public class RequestProcessor implements Runnable{
     private final Logger logger = LogManager.getLogger("com.github.dustyace.lab6");
     private final DatagramPacket dp;
+    private final DatagramSocket ds;
     private final Request req;
     private static ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-    RequestProcessor(Request req, DatagramPacket dp) {
+    RequestProcessor(Request req, DatagramPacket dp, DatagramSocket ds) {
         this.req=req;
         this.dp=dp;
+        this.ds=ds;
     }
 
     @Override
@@ -47,7 +50,6 @@ public class RequestProcessor implements Runnable{
     }
 
     private void processCommandRequest(CommandRequest req) throws IOException {
-        System.out.println("hi");
         if (DatabaseHandler.checkUser(req.getUsername(), req.getPassword())) {
             Invoker.executeCommand(req);
         } else {
@@ -83,7 +85,7 @@ public class RequestProcessor implements Runnable{
     }
 
     private void sendResponse(Response r) {
-        executorService.execute( new Responder(r, dp) );
+        executorService.execute( new Responder(r, dp, ds) );
     }
 
 }

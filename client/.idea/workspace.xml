@@ -5,25 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0a642078-636c-4b12-b011-381131434455" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/scripts/spam" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/src/main/java/communication/RequestProcessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/src/main/java/communication/RequestReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/src/main/java/communication/Responder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/communication/CommunicationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communication/CommunicationHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/Shutdown.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/AddCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/AddCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/AddMinCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/AddMinCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/LoadCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/RemoveCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/RemoveCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/RemoveGreaterCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/RemoveGreaterCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/SaveCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/UpdateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/UpdateCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/communication/UserStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communication/UserStatus.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/src/main/java/communication/CommunicationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/communication/CommunicationHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/communication/SerializationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/communication/SerializationHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/handlers/CollectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/handlers/CollectionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/handlers/InputHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/handlers/InputHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/communication/RequestProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/communication/RequestProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/communication/RequestReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/communication/RequestReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/communication/Responder.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/communication/Responder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

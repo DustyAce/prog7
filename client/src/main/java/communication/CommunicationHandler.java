@@ -70,7 +70,8 @@ public class CommunicationHandler {
 
     private static void establishConnection(Request req) throws IOException {
         host = InetAddress.getLocalHost();
-        addr = new InetSocketAddress(host, port);
+        addr = new InetSocketAddress(host, UserStatus.getServerPort());
+        System.out.println(UserStatus.getServerPort());
         dc = DatagramChannel.open();
         dc.configureBlocking(false);
         dc.bind(null);
@@ -88,6 +89,7 @@ public class CommunicationHandler {
             int i = selector.select(5_000);
             if (i == 0) {
                 if (++attempts > 3) { System.out.println("Server not responding :("); return false; }
+                if (attempts > 2) { UserStatus.resetServerPort(); addr = new InetSocketAddress(host, UserStatus.getServerPort()); }
                 System.out.printf("Couldn't reach server, attempt %s...\n", attempts+1);
                 buf = ByteBuffer.wrap(message);
                 dc.send(buf, addr);
@@ -116,20 +118,23 @@ public class CommunicationHandler {
         responseBuffer.clear();
         dc.register(selector, SelectionKey.OP_WRITE);
         int i;
-        do { //fuckass method doesn't work with 10k elements, need to figue out blocking
-            i = selector.select(1000);
-            Arrays.fill(b, (byte) -1);
+        InetSocketAddress adr = null;
+        do {
+            i = selector.select(10000);
             segment_buffer = ByteBuffer.allocate(bufsize);
-            dc.receive(segment_buffer);
+            if (i != 0) { adr = (InetSocketAddress) dc.receive(segment_buffer);}
             responseBuffer.add(segment_buffer.array());
-        } while (i != 0);
+        } while (segment_buffer.array()[bufsize-2] != 0);
+
+        UserStatus.setServerPort( adr.getPort() );
+
         desegmentedResponse = SegmentationHandler.desegment(responseBuffer);
     }
 
     public static void processResponse(Request req) throws IOException{
         try {
             Route.isLoading = true;
-            Response r = SerializationHandler.deserializeResponse(desegmentedResponse);
+            Response r = deserializeResponse(desegmentedResponse);
             Route.isLoading = false;
             req.processResponse(r);
         } finally {

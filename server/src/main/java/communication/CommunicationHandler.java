@@ -50,10 +50,10 @@ public class CommunicationHandler extends Thread {
             dp = new DatagramPacket(arr, arr.length);
 
             ds.receive(dp);
-            logger.info("Recieved a request...");
+            logger.info("Recieved a first-time request...");
             logger.debug("from {}:{}", dp.getAddress(), dp.getPort());
 
-            executorService.execute( new RequestReader(dp.getData(), dp) );
+            executorService.execute( new RequestReader(dp, new DatagramSocket()) );
 
             logger.info("Request successfuly deserialized");
 

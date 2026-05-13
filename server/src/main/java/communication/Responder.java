@@ -11,17 +11,20 @@ import shared.responses.Response;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Responder implements Runnable{
     private final Logger logger = LogManager.getLogger("com.github.dustyace.lab6");
     private final DatagramPacket dp;
+    private final DatagramSocket ds;
 
     private final Response req;
-    Responder(Response req, DatagramPacket dp) {
+    Responder(Response req, DatagramPacket dp, DatagramSocket ds) {
         this.req=req;
         this.dp=dp;
+        this.ds=ds;
     }
 
     @Override
@@ -54,6 +57,6 @@ public class Responder implements Runnable{
 
     private void sendResponse(byte[] message) throws IOException {
         DatagramPacket dpr = new DatagramPacket(message, message.length, dp.getAddress(), dp.getPort());
-        CommunicationHandler.getDs().send(dpr);
+        ds.send(dpr);
     }
 }
