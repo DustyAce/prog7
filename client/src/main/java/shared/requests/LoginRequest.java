@@ -9,7 +9,8 @@ public class LoginRequest extends Request{
     protected String username;
     protected String password;
     public LoginRequest() {
-        if (UserStatus.isLoggedIn()) return;
+//        if (UserStatus.isLoggedIn()) return;
+//        optional - if forbidding user from re-logging in, session may be locked if user is removed from db
         username = InputHandler.stringInput("username");
         password = InputHandler.stringInput("password");
     }

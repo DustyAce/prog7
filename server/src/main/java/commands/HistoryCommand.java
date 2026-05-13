@@ -1,10 +1,9 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
-import commands.meta.HistoryEntry;
 import commands.meta.Invoker;
 import handlers.OutputHandler;
+import shared.requests.CommandRequest;
 
 public class HistoryCommand implements Command {
     @Override
@@ -13,7 +12,7 @@ public class HistoryCommand implements Command {
     }
 
     @Override
-    public void execute(CommandArgs ca) {
+    public void execute(CommandRequest cr) {
         Invoker.getHistory().forEach( h -> { OutputHandler.message(h.command().getName()); });
     }
 

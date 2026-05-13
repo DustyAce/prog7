@@ -1,11 +1,12 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
 import commands.meta.Invoker;
 import commands.meta.Undoable;
+import handlers.DatabaseHandler;
 import shared.elements.Route;
 import handlers.CollectionHandler;
+import shared.requests.CommandRequest;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -17,8 +18,9 @@ public class ClearCommand implements Command, Undoable {
     }
 
     @Override
-    public void execute(CommandArgs ca) {
-        Route[] r = CollectionHandler.clear();
+    public void execute(CommandRequest cr) {
+        HashSet<Long> idsToRemove = DatabaseHandler.clear(cr.getUsername());
+        Route[] r = CollectionHandler.clear(idsToRemove);
         Invoker.addToRouteHistory(r);
     }
 
@@ -30,7 +32,8 @@ public class ClearCommand implements Command, Undoable {
 
     @Override
     public void redo(Route... routes) {
-        CollectionHandler.clear();
+        //todo
+        //CollectionHandler.clear();
     }
 
     @Override

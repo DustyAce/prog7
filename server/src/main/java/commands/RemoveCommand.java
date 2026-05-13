@@ -1,19 +1,20 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
 import commands.meta.Undoable;
+import handlers.DatabaseHandler;
 import shared.elements.Route;
 import handlers.CollectionHandler;
 import handlers.OutputHandler;
+import shared.requests.CommandRequest;
 
 public class RemoveCommand implements Command, Undoable {
     public String desc() { return "removes Route with specified {id}"; }
 
-    public void execute(CommandArgs ca) {
+    public void execute(CommandRequest cr) {
         long id;
         try {
-            id = Long.parseLong(ca.args()[0]);
+            id = Long.parseLong(cr.getArgs()[0]);
         } catch (NumberFormatException e) {
             OutputHandler.message("Bad argument!");
             return;
@@ -21,7 +22,10 @@ public class RemoveCommand implements Command, Undoable {
         OutputHandler.message("Provide a Route id number!");
         return;
         }
-        CollectionHandler.remove_by_id(id);
+        if (DatabaseHandler.remove(id, cr.getUsername())) {
+            CollectionHandler.remove_by_id(id);
+        }
+
     }
 
     @Override

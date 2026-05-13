@@ -1,19 +1,19 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
 import handlers.CollectionHandler;
 import handlers.OutputHandler;
+import shared.requests.CommandRequest;
 
 public class MoreCommand implements Command {
     public String desc() {
         return "Route info with specified {id}";
     }
 
-    public void execute(CommandArgs ca) {
+    public void execute(CommandRequest cr) {
         long id;
         try {
-            id = Long.parseLong(ca.args()[0]);
+            id = Long.parseLong(cr.getArgs()[0]);
         } catch (NumberFormatException e) {
             OutputHandler.message("Bad argument!");
             return;

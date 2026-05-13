@@ -22,9 +22,9 @@ public class SegmentationHandler {
 
         int start = 0;
         while (start < msg.length) {
-            int end = Math.min(start+segmentSize-1, msg.length);
+            int end = Math.min(start+segmentSize, msg.length);
             ret.add(Arrays.copyOfRange(msg, start, end));
-            start += segmentSize-1;
+            start += segmentSize;
         }
         logger.info("Divided message into {} segments", ret.size());
         return ret;

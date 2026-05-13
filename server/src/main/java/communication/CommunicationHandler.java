@@ -67,6 +67,7 @@ public class CommunicationHandler extends Thread {
     }
 
     private static void processCommandRequest(CommandRequest req) throws IOException {
+        System.out.println("hi");
         if (DatabaseHandler.checkUser(req.getUsername(), req.getPassword())) {
             Invoker.executeCommand(req);
         } else {
@@ -98,13 +99,16 @@ public class CommunicationHandler extends Thread {
     }
 
     private static void processCheckRouteExistsRequest(CheckRouteExistsRequest req) throws IOException {
-        logger.info("Client looking for route with id {}", req.getId());
+        logger.info("'{}' looking for route with id {}", req.getUsername(), req.getId());
 
-        byte[] message = new byte[]{0};
-        if (CollectionHandler.isIdValid(req.getId())) { message[0]++; logger.info("Such route exists"); }
-        else { logger.info("Such route doesn't exist"); }
+        BooleanResponse resp = new BooleanResponse();
+        boolean isRouteIdValid = CollectionHandler.isIdValid(req.getId());
+        boolean isRouteOwner = DatabaseHandler.checkOwnership(req.getId(), req.getUsername());
+        resp.setStatus(isRouteIdValid && isRouteOwner);
+        if (isRouteIdValid && isRouteOwner) { logger.info("Such route exists and is owned by requesting user"); }
+        else { logger.info("Such route doesn't exist/is owned by another"); }
 
-        logger.debug("message[0]: {}", message[0]);
+        byte[] message = SerializationHandler.serialize_response(resp);
         DatagramPacket dpr = new DatagramPacket(message, message.length, dp.getAddress(), dp.getPort());
         ds.send(dpr);
     }

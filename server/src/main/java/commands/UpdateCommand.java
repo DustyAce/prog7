@@ -1,12 +1,13 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
 import commands.meta.Invoker;
 import commands.meta.Undoable;
+import handlers.DatabaseHandler;
 import shared.elements.Route;
 import handlers.CollectionHandler;
 import handlers.OutputHandler;
+import shared.requests.CommandRequest;
 
 public class UpdateCommand implements Command, Undoable {
     @Override
@@ -15,9 +16,11 @@ public class UpdateCommand implements Command, Undoable {
     }
 
     @Override
-    public void execute(CommandArgs ca) {
+    public void execute(CommandRequest cr) {
         try {
-            Invoker.addToRouteHistory(CollectionHandler.update_id(Long.parseLong(ca.args()[0]), ca.route()));
+            if (DatabaseHandler.update(cr.getRoute(), cr.getUsername() )) {
+                Invoker.addToRouteHistory(CollectionHandler.update_id(Long.parseLong(cr.getArgs()[0]), cr.getRoute()));
+            }
         } catch (NumberFormatException e) {
             OutputHandler.message("Invalid id");
         }

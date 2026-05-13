@@ -1,13 +1,11 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
 import handlers.CollectionHandler;
 import handlers.OutputHandler;
-import shared.elements.Route;
+import shared.requests.CommandRequest;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  * ПСЖ
@@ -22,8 +20,8 @@ public class PSZHCommand implements Command {
      * ПСЖ
      */
     @Override
-    public void execute(CommandArgs ca) {
-        if (ca.args().length==0) {
+    public void execute(CommandRequest cr) {
+        if (cr.getArgs().length==0) {
         OutputHandler.message(
                 """
                         ##########      ########    ##  ##  ##

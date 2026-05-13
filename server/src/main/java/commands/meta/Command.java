@@ -1,5 +1,7 @@
 package commands.meta;
 
+import shared.requests.CommandRequest;
+
 /**
  * Command interface
  */
@@ -7,10 +9,9 @@ public interface Command {
     /**
      * Execute the command
      *
-     * @param ca command arguments
+     * @param cr command arguments
      */
-    public void execute(CommandArgs ca);
-    public default void execute(String... args) { execute(new CommandArgs(args, null)); }
+    public void execute(CommandRequest cr);
 
     /**
      * Get a command's description

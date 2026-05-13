@@ -57,7 +57,7 @@ public class CommunicationHandler {
 //            }
 //OPTIONAL: unallow re-logging in.
 // ! locks the session if credentials become invalid after user is already logged in.
-            
+
             establishConnection(req);
             if (!sendRequest()) {return;}
             receiveResponse();
@@ -113,19 +113,22 @@ public class CommunicationHandler {
         byte[] b = new byte[bufsize];
         responseBuffer.clear();
         dc.register(selector, SelectionKey.OP_WRITE);
+        int i;
         do { //fuckass method doesn't work with 10k elements, need to figue out blocking
-            int i = selector.select(1000);
+            i = selector.select(1000);
             Arrays.fill(b, (byte) -1);
-            segment_buffer = ByteBuffer.wrap(b);
+            segment_buffer = ByteBuffer.allocate(bufsize);
             dc.receive(segment_buffer);
             responseBuffer.add(segment_buffer.array());
-        } while (b[bufsize-1] != -1);
+        } while (i != 0);
         desegmentedResponse = SegmentationHandler.desegment(responseBuffer);
     }
 
     public static void processResponse(Request req) throws IOException{
         try {
+            Route.isLoading = true;
             Response r = SerializationHandler.deserializeResponse(desegmentedResponse);
+            Route.isLoading = false;
             req.processResponse(r);
         } finally {
             dc.close();

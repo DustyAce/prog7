@@ -27,13 +27,9 @@ public class SerializationHandler {
     }
 
     public static Response deserializeResponse(byte[] arr) throws JsonProcessingException{
-        int i = 0;
-        while (arr[i] != -1) {
-            if (arr[i] == -1) {break;}
-            i++;
-        }
-        String req = new String(Arrays.copyOfRange(arr, 0, i), StandardCharsets.UTF_8);
+        String req = new String(arr, StandardCharsets.UTF_8);
         req = req.replaceAll("\0", "");
+        System.out.println(req);
         ObjectMapper om = JsonMapper.builder()
                 .findAndAddModules()
                 .build();

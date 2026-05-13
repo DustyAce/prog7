@@ -1,8 +1,8 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
 import handlers.FileHandler;
+import shared.requests.CommandRequest;
 
 public class LoadCommand implements Command {
     @Override
@@ -11,7 +11,7 @@ public class LoadCommand implements Command {
     }
 
     @Override
-    public void execute(CommandArgs ca) {
+    public void execute(CommandRequest cr) {
         FileHandler.load();
     }
 

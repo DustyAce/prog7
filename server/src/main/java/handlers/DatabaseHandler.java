@@ -63,7 +63,7 @@ public class DatabaseHandler {
         }
     }
 
-    public static void insert(Route r, String owner) {
+    public static Long insert(Route r, String owner) {
         try {
             PreparedStatement ps_coords = db.prepareStatement("INSERT INTO coordinates(x,y) VALUES (?, ?)");
             r.getCoordinates().setValuesInStatement(ps_coords);
@@ -96,53 +96,92 @@ public class DatabaseHandler {
             }
 
             db.commit();
+            Statement s = db.createStatement();
+            s.execute("SELECT max(id) FROM route;");
+            ResultSet rs = s.getResultSet();
+            rs.next();
+            return rs.getLong(1);
         } catch (SQLException e) {
             logger.error("Insertion unsuccessfull!");
             logger.debug(e.getMessage());
             rollback();
+            return null;
         }
 
     }
-    public static void remove(Long id, String user) {
+
+    public static boolean checkIfMin(Route r) {
         try {
-            if (!checkOwnership(id,user)) {return;}
+            PreparedStatement ps = db.prepareStatement("SELECT 1 FROM route WHERE distance<?");
+            ps.setLong(1, r.getDistance());
+            ps.execute();
+            return ps.getResultSet().next();
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public static boolean remove(Long id, String user) {
+        try {
+            if (!checkOwnership(id,user)) {
+                OutputHandler.message("You do not own this object or no such object exists, cannot remove!");
+                return false;
+            }
 
             db.createStatement().execute(String.format(
                             "DELETE FROM route WHERE id=%s", id
                     ));
             db.commit();
+            return true;
         } catch (SQLException e) {
             logger.error("Removal unsuccessfull!");
             logger.debug(e.getMessage());
             rollback();
+            return false;
         }
     }
 
-    public static void removeGreater(Route r, String user) {
+    public static HashSet<Long> removeGreater(Route r, String user) {
         try {
+            PreparedStatement ret = db.prepareStatement("SELECT id FROM route WHERE owner= ( SELECT id FROM users WHERE name ILIKE ? ) AND distance>?;");
+            ret.setString(1,user);
+            ret.setLong(2, r.getDistance());
+            ret.execute();
+
             PreparedStatement ps = db.prepareStatement(
-                    "DELETE FROM route WHERE distance>? AND owner=?"
-            );
-            ps.setLong(1,r.getDistance());
-            ps.setString(2,user);
+                    "DELETE FROM route WHERE owner= ( SELECT id FROM users WHERE name ILIKE ? ) AND distance>?;");
+            ps.setString(1,user);
+            ps.setLong(2, r.getDistance());
+            ps.execute();
 
             db.commit();
+
+            HashSet<Long> idsToRemove = new HashSet<>();
+            ResultSet rs = ret.getResultSet();
+            while (rs.next()) {
+                idsToRemove.add(rs.getLong(1));
+            }
+            return idsToRemove;
+
         } catch (SQLException e) {
             logger.error("GRemoval unsuccessfull!");
             logger.debug(e.getMessage());
             rollback();
+            return new HashSet<>();
         }
+
     }
 
-    private static boolean checkOwnership(Long id, String user) {
+    public static boolean checkOwnership(Long id, String user) {
         try {
             PreparedStatement ps = db.prepareStatement(
-                    "SELECT 1 FROM route WHERE owner = ( SELECT id FROM users WHERE name=? ) AND id=?");
+                    "SELECT 1 FROM route WHERE (owner = ( SELECT id FROM users WHERE name=? ) OR owner IS NULL)AND id=?");
             ps.setString(1,user);
             ps.setLong(2, id);
             ps.execute();
-
-            return ps.getResultSet().next();
+            boolean ret= ps.getResultSet().next();
+            logger.debug("Checking ownership of {} - {}... Result: {}", id, user, ret);
+            return ret;
         } catch ( SQLException e ) {
             logger.error("Something went wrong in checkOwnership :(");
             logger.debug(e.getMessage());
@@ -150,35 +189,54 @@ public class DatabaseHandler {
         }
     }
 
-    public static void clear(String user) {
+    public static HashSet<Long> clear(String user) {
         try {
+            logger.debug("Clearing routes with owner '{}'...", user);
+            PreparedStatement ret = db.prepareStatement("SELECT id FROM route WHERE owner= ( SELECT id FROM users WHERE name ILIKE ? );");
+            ret.setString(1,user);
+            ret.execute();
             PreparedStatement ps = db.prepareStatement(
-                    "DELETE FROM route WHERE owner= ( SELECT id FROM users WHERE name=? )");
+                    "DELETE FROM route WHERE owner= ( SELECT id FROM users WHERE name ILIKE ? );");
             ps.setString(1,user);
             ps.execute();
 
             db.commit();
+
+            HashSet<Long> idsToRemove = new HashSet<>();
+            ResultSet rs = ret.getResultSet();
+            while (rs.next()) {
+                idsToRemove.add(rs.getLong(1));
+            }
+            return idsToRemove;
         } catch ( SQLException e ) {
             logger.error("Clear unsuccessfull!");
             logger.debug(e.getMessage());
             rollback();
+            return new HashSet<>();
         }
     }
 
-    public static void update(Route r, String owner) {
+    public static boolean update(Route r, String owner) {
         try{
-            if (!checkOwnership(r.getId(), owner)) {return;}
+            if (!checkOwnership(r.getId(), owner)) {
+                OutputHandler.message("You are not the owner of this object!");
+                return false;
+            }
             remove(r.getId(), owner);
             insert(r,owner);
-            db.createStatement().execute(
-                    "UPDATE route SET id=? WHERE id= (SELECT max(id) FROM route)"
+            db.createStatement().execute(String.format(
+                    "UPDATE route SET id=%s WHERE id = (SELECT max(id) FROM route)",
+                    r.getId()
+                    )
             );
 
             db.commit();
+            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             logger.error("uh-oh :(");
         }
+        return false;
     }
 
     private static void rollback() {
@@ -201,7 +259,7 @@ public class DatabaseHandler {
             logger.debug("Checking if '{}':'{}' exists", username, password);
             username = username.toLowerCase();
 
-            PreparedStatement selectUserPass = db.prepareStatement("SELECT pass FROM users WHERE name = ?;");;
+            PreparedStatement selectUserPass = db.prepareStatement("SELECT pass FROM users WHERE name iLIKE ?;");
             selectUserPass.setString(1, username);
             selectUserPass.execute();
             ResultSet rs = selectUserPass.getResultSet();

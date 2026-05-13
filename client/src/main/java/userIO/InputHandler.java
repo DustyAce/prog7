@@ -62,7 +62,7 @@ public class InputHandler {
     private static void checkRouteIdExists(CommandRequest ret) {
         try {
             Long id = Long.parseLong(ret.getArgs()[0]);
-            CommunicationHandler.request( new CheckRouteExistsRequest(id));
+            CommunicationHandler.request( new CheckRouteExistsRequest(id, ret.getUsername()));
             if ( !CheckRouteExistsRequest.getResult() ) {
                 System.out.println( "Route does not exist." ); throw new BadIdException("No route with given id");
             }

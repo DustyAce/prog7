@@ -61,7 +61,7 @@ public class Invoker {
 
         CommandArgs args = new CommandArgs( cr.getArgs(), cr.getRoute());
         try {
-            c.execute(  args   );
+            c.execute(  cr   );
         } catch (NullPointerException npe) {
             OutputHandler.message("Bad argument!");
             logger.error("Could not execute request, bad argument!");
@@ -114,7 +114,8 @@ public class Invoker {
                 routeHistory.push(routeUndone.pop());
                 ((Undoable) c).redo(routeHistory.peek());
             } else {
-                c.execute(h.args());
+                //todo fix
+                //c.execute(h.args());
             }
             logger.trace("redone '{}'", c.getName());
             OutputHandler.message( "redone '%s'", c.getName() );

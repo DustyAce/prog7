@@ -1,18 +1,16 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
 import handlers.OutputHandler;
-
-import java.util.Arrays;
+import shared.requests.CommandRequest;
 
 public class EchoCommand implements Command {
     public String desc() {
         return "echo";
     }
 
-    public void execute(CommandArgs ca) {
-        OutputHandler.message( String.join(" ", ca.args())) ;
+    public void execute(CommandRequest cr) {
+        OutputHandler.message( String.join(" ", cr.getArgs())) ;
     }
 
     @Override

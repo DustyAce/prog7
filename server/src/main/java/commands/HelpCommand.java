@@ -1,9 +1,9 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
 import commands.meta.Invoker;
 import handlers.OutputHandler;
+import shared.requests.CommandRequest;
 
 import java.util.stream.Collectors;
 
@@ -14,7 +14,7 @@ public class HelpCommand implements Command {
         return "outputs a list of all commands";
     }
 
-    public void execute(CommandArgs ca) {
+    public void execute(CommandRequest cr) {
         if (text == null) {
             text = Invoker.getCommands().entrySet().stream().map(
                 entry -> String.format("%-16s - %s", entry.getKey(), entry.getValue().desc())

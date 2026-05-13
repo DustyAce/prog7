@@ -33,4 +33,14 @@ public class CommandRequest extends Request {
 
     @Override
     public void processResponse(Response r) {}
+
+    @Override
+    public String toString() {
+        return String.format("CommandRequest{%s, [%s], %s} by '%s'",
+                command,
+                String.join(",", primitiveArgs),
+                route,
+                username
+                );
+    }
 }

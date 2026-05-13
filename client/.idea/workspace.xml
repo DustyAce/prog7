@@ -5,37 +5,44 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0a642078-636c-4b12-b011-381131434455" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../server/src/main/java/handlers/DatabaseHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/src/main/java/shared/requests/LoginRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/src/main/java/shared/requests/RegisterRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/src/main/java/shared/responses/BooleanResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/communication/CommunicationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communication/CommunicationHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/communication/SerializationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communication/SerializationHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/shared/commands/CommandEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/commands/CommandEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/shared/elements/Route.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/elements/Route.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/shared/requests/CommandRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/requests/CommandRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/shared/requests/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/requests/Request.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/shared/responses/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/responses/Response.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/userIO/ExecuteScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/userIO/ExecuteScript.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/shared/requests/CheckRouteExistsRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/requests/CheckRouteExistsRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/shared/requests/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/shared/requests/LoginRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/userIO/InputHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/userIO/InputHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../server/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/save" beforeDir="false" afterPath="$PROJECT_DIR$/../server/save" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/LoginCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/RegisterCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/AddCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/AddCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/AddMinCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/AddMinCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/ClearCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/ClearCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/EchoCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/EchoCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/ExitCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/ExitCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/FilterNameCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/FilterNameCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/HelpCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/HelpCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/HistoryCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/HistoryCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/InfoCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/InfoCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/LoadCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/LoadCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/MoreCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/MoreCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/PSZHCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/PSZHCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/PrintAscendingCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/PrintAscendingCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/RedoCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/RedoCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/RemoveCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/RemoveCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/RemoveGreaterCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/RemoveGreaterCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/SaveCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/SaveCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/ShowCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/ShowCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/UndoCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/UndoCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/UniqueDistanceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/UniqueDistanceCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/UpdateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/UpdateCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/meta/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/meta/Command.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/commands/meta/Invoker.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/commands/meta/Invoker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/src/main/java/communication/CommunicationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/communication/CommunicationHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/shared/elements/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/shared/elements/Coordinates.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/shared/elements/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/shared/elements/Location.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/shared/elements/Route.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/shared/elements/Route.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/communication/SegmentationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/communication/SegmentationHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/handlers/CollectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/handlers/CollectionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/handlers/DatabaseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/handlers/DatabaseHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/handlers/InputHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/handlers/InputHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main/java/shared/requests/CheckRouteExistsRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/shared/requests/CheckRouteExistsRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../server/src/main/java/shared/requests/CommandRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/shared/requests/CommandRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/shared/requests/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/shared/requests/Request.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/shared/responses/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/shared/responses/Response.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

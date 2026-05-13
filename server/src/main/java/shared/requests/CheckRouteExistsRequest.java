@@ -6,8 +6,13 @@ import shared.responses.Response;
 public class CheckRouteExistsRequest extends Request{
     private Long id;
     private static boolean result = false;
+    private String username;
     public CheckRouteExistsRequest() {
 
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public Long getId() {

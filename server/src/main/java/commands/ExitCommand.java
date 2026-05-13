@@ -1,12 +1,12 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
+import shared.requests.CommandRequest;
 
 public class ExitCommand implements Command {
     public String desc() {return "exit without saving";}
 
-    public void execute(CommandArgs ca){
+    public void execute(CommandRequest cr){
         System.exit(3);
     }
 

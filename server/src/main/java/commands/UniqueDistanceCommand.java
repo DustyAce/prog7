@@ -1,8 +1,8 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
 import handlers.CollectionHandler;
+import shared.requests.CommandRequest;
 
 public class UniqueDistanceCommand implements Command {
     @Override
@@ -11,7 +11,7 @@ public class UniqueDistanceCommand implements Command {
     }
 
     @Override
-    public void execute(CommandArgs ca) {
+    public void execute(CommandRequest cr) {
         CollectionHandler.print_unique_distance();
     }
 

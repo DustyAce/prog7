@@ -1,10 +1,9 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
-import commands.meta.Invoker;
 import handlers.CollectionHandler;
 import handlers.OutputHandler;
+import shared.requests.CommandRequest;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -16,12 +15,12 @@ public class FilterNameCommand implements Command {
     }
 
     @Override
-    public void execute(CommandArgs ca) {
+    public void execute(CommandRequest cr) {
         OutputHandler.setRoutes(
                 CollectionHandler.getRoutes().stream()
                         .filter( r -> r.getName()
                                 .contains(
-                                        String.join( " ", ca.args() )
+                                        String.join( " ", cr.getArgs() )
                         )).collect(Collectors.toCollection(ArrayList::new))
         );
     }

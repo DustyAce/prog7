@@ -1,11 +1,12 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
 import commands.meta.Invoker;
 import commands.meta.Undoable;
+import handlers.DatabaseHandler;
 import shared.elements.Route;
 import handlers.CollectionHandler;
+import shared.requests.CommandRequest;
 
 public class AddMinCommand implements Command, Undoable {
     @Override
@@ -14,10 +15,16 @@ public class AddMinCommand implements Command, Undoable {
     }
 
     @Override
-    public void execute(CommandArgs ca) {
-        Route r = ca.route();
-        if (CollectionHandler.add_if_min(r)) {
-            Invoker.addToRouteHistory(r);
+    public void execute(CommandRequest cr) {
+        Route r = cr.getRoute();
+        if (DatabaseHandler.checkIfMin(r)){
+            Long id = DatabaseHandler.insert(r, cr.getUsername());
+            if (id != null) {
+                r.setId(id);
+                CollectionHandler.add(r);
+                Invoker.addToRouteHistory(r);
+            }
+
         }
     }
 

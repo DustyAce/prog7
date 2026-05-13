@@ -1,10 +1,10 @@
 package commands;
 
 import commands.meta.Command;
-import commands.meta.CommandArgs;
 import handlers.CollectionHandler;
 import handlers.OutputHandler;
 import shared.elements.Route;
+import shared.requests.CommandRequest;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -16,7 +16,7 @@ public class PrintAscendingCommand implements Command {
     }
 
     @Override
-    public void execute(CommandArgs ca) {
+    public void execute(CommandRequest cr) {
         OutputHandler.setRoutes(
                 CollectionHandler.getRoutes().stream()
                         .sorted(Route::compareTo)

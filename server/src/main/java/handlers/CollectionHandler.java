@@ -27,6 +27,17 @@ public class CollectionHandler {
         return r;
     }
 
+    public static Route[] clear(HashSet<Long> idsToRemove) {
+        HashSet<Route> removed = new HashSet<>();
+        for (long id: idsToRemove) {
+            removed.add(remove_by_id(id));
+        }
+        Route[] r = removed.toArray(new Route[0]);
+        OutputHandler.message("Collection cleared, removed %s routes.\n", r.length);
+        logger.trace("Removed {} routes.", r.length);
+        return r;
+    }
+
     public static boolean isIdValid(Long id) {
         return routes.stream()
                 .anyMatch( route -> route.getId().equals(id) );
@@ -79,9 +90,7 @@ public class CollectionHandler {
     }
 
     public static void add(Route... newRoutes) {
-        Long maxId = routes.stream().mapToLong( Route::getId ).max().orElse(-1) + 1;
         for (Route r: newRoutes) {
-            r.setId(maxId++);
             routes.add(r);
             logger.trace("Route {} added", r);
             OutputHandler.message("Added %s", r);
