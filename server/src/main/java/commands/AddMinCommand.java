@@ -31,7 +31,7 @@ public class AddMinCommand implements Command, Undoable {
     @Override
     public void undo(Route... routes) {
         if (routes.length == 1 && routes[0] != null) {
-            CollectionHandler.remove_by_id(routes[0].getId());
+            CollectionHandler.removeById(routes[0].getId());
         }
     }
 

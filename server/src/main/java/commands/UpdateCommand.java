@@ -19,7 +19,7 @@ public class UpdateCommand implements Command, Undoable {
     public void execute(CommandRequest cr) {
         try {
             if (DatabaseHandler.update(cr.getRoute(), cr.getUsername() )) {
-                Invoker.addToRouteHistory(CollectionHandler.update_id(Long.parseLong(cr.getArgs()[0]), cr.getRoute()));
+                Invoker.addToRouteHistory(cr.getRoute());
             }
         } catch (NumberFormatException e) {
             OutputHandler.message("Invalid id");
@@ -29,14 +29,14 @@ public class UpdateCommand implements Command, Undoable {
     @Override
     public void undo(Route... routes) {
         Route oldRoute = routes[0];
-        CollectionHandler.remove_by_id(oldRoute.getId());
+        CollectionHandler.removeById(oldRoute.getId());
         CollectionHandler.add(oldRoute);
     }
 
     @Override
     public void redo(Route... routes) {
         Route newRoute = routes[1];
-        CollectionHandler.remove_by_id(newRoute.getId());
+        CollectionHandler.removeById(newRoute.getId());
         CollectionHandler.add(newRoute);
     }
 

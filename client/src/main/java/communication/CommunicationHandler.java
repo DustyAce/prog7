@@ -51,6 +51,7 @@ public class CommunicationHandler {
                 System.out.println("Not logged in! Use 'login' or 'register'.");
                 return;
             }
+
 //            else if (req instanceof LoginRequest && UserStatus.isLoggedIn()) {
 //                System.out.println("Already logged in!");
 //                return;
@@ -72,6 +73,7 @@ public class CommunicationHandler {
         addr = new InetSocketAddress(host, port);
         dc = DatagramChannel.open();
         dc.configureBlocking(false);
+        dc.bind(null);
         selector = Selector.open();
         dc.register(selector, SelectionKey.OP_READ);
         message = serializeRequest(req);

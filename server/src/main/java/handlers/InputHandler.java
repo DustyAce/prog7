@@ -1,8 +1,6 @@
 package handlers;
 
 import commands.ExitCommand;
-import commands.LoadCommand;
-import commands.SaveCommand;
 import commands.meta.Command;
 import shared.requests.CommandRequest;
 
@@ -13,8 +11,6 @@ public class InputHandler extends Thread {
     static Scanner sc = new Scanner(System.in);
     private static HashMap<String, Command> serverCommands = new HashMap<>();
     static {
-        serverCommands.put("save", new SaveCommand());
-        serverCommands.put("load", new LoadCommand());
         serverCommands.put("exit", new ExitCommand());
     }
 

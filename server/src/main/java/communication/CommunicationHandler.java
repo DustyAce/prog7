@@ -19,12 +19,20 @@ import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CommunicationHandler extends Thread {
     private static final Logger logger = LogManager.getLogger("com.github.dustyace.lab6");
     static int port = 1430;
     static DatagramSocket ds;
     static DatagramPacket dp;
+
+    private static ExecutorService executorService = Executors.newCachedThreadPool();
+
+    public static DatagramSocket getDs() {
+        return ds;
+    }
 
     @Override
     public void run() {
@@ -45,17 +53,11 @@ public class CommunicationHandler extends Thread {
             logger.info("Recieved a request...");
             logger.debug("from {}:{}", dp.getAddress(), dp.getPort());
 
-            Request req = SerializationHandler.deserialize_request(arr);
+            executorService.execute( new RequestReader(dp.getData(), dp) );
+
             logger.info("Request successfuly deserialized");
 
-            if (req instanceof CheckRouteExistsRequest) {
-                processCheckRouteExistsRequest( (CheckRouteExistsRequest) req);
-                return;
-            } else if (req instanceof LoginRequest lr) {
-                processLoginRequest(lr);
-                return;
-            }
-            processCommandRequest( (CommandRequest) req);
+
         } catch (JsonProcessingException jpe) {
             logger.error("Request couldn't be deserialized");
             logger.error(jpe);
@@ -66,60 +68,5 @@ public class CommunicationHandler extends Thread {
         }
     }
 
-    private static void processCommandRequest(CommandRequest req) throws IOException {
-        System.out.println("hi");
-        if (DatabaseHandler.checkUser(req.getUsername(), req.getPassword())) {
-            Invoker.executeCommand(req);
-        } else {
-            OutputHandler.message("Bad credentials!");
-        }
 
-        Response r = createCommandResponse();
-
-        byte[] message = SerializationHandler.serialize_response(r);
-        LinkedList<byte[]> segments = SegmentationHandler.segment(message);
-
-        for (byte[] seg : segments) {
-            sendResponse(seg);
-            logger.debug("seg.length: {}", seg.length);
-        }
-//        DatagramPacket dpr = new DatagramPacket(new byte[]{-1}, 1, dp.getAddress(), dp.getPort());
-//        ds.send(dpr);
-        logger.info("Sent response.");
-    }
-
-    private static void processLoginRequest(LoginRequest lr) throws IOException{
-        BooleanResponse resp = new BooleanResponse();
-        if (DatabaseHandler.checkUser(lr.getUsername(), lr.getPassword()) ) {
-            resp.setStatus(true);
-        } else if (lr instanceof RegisterRequest && DatabaseHandler.registerUser(lr.getUsername(), lr.getPassword())) {
-            resp.setStatus(true);
-        } else {resp.setStatus(false);}
-        sendResponse( SerializationHandler.serialize_response(resp) );
-    }
-
-    private static void processCheckRouteExistsRequest(CheckRouteExistsRequest req) throws IOException {
-        logger.info("'{}' looking for route with id {}", req.getUsername(), req.getId());
-
-        BooleanResponse resp = new BooleanResponse();
-        boolean isRouteIdValid = CollectionHandler.isIdValid(req.getId());
-        boolean isRouteOwner = DatabaseHandler.checkOwnership(req.getId(), req.getUsername());
-        resp.setStatus(isRouteIdValid && isRouteOwner);
-        if (isRouteIdValid && isRouteOwner) { logger.info("Such route exists and is owned by requesting user"); }
-        else { logger.info("Such route doesn't exist/is owned by another"); }
-
-        byte[] message = SerializationHandler.serialize_response(resp);
-        DatagramPacket dpr = new DatagramPacket(message, message.length, dp.getAddress(), dp.getPort());
-        ds.send(dpr);
-    }
-
-    private static Response createCommandResponse() {
-        ArrayList<Route> routes = OutputHandler.getRoutes();
-        return new CommandResponse(routes, OutputHandler.getMessage());
-    }
-
-    private static void sendResponse(byte[] message) throws IOException {
-        DatagramPacket dpr = new DatagramPacket(message, message.length, dp.getAddress(), dp.getPort());
-        ds.send(dpr);
-    }
 }

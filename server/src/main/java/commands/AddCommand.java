@@ -24,7 +24,7 @@ public class AddCommand implements Command, Undoable {
     @Override
     public void undo(Route... routes) {
         if (routes.length == 1) {
-            CollectionHandler.remove_by_id(routes[0].getId());
+            CollectionHandler.removeById(routes[0].getId());
         } else {
             OutputHandler.message("Undo failed, bad argument");
         }

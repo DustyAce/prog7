@@ -23,7 +23,7 @@ public class RemoveCommand implements Command, Undoable {
         return;
         }
         if (DatabaseHandler.remove(id, cr.getUsername())) {
-            CollectionHandler.remove_by_id(id);
+            CollectionHandler.removeById(id);
         }
 
     }
@@ -38,7 +38,7 @@ public class RemoveCommand implements Command, Undoable {
     @Override
     public void redo(Route... routes) {
         if (routes.length == 1) {
-            CollectionHandler.remove_by_id(routes[0].getId());
+            CollectionHandler.removeById(routes[0].getId());
         } else { OutputHandler.message("rm.undo failed, bad argument");}
     }
 

@@ -5,7 +5,10 @@ import org.apache.logging.log4j.Logger;
 import shared.elements.Route;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -13,7 +16,7 @@ import java.util.HashSet;
  */
 public class CollectionHandler {
     private static final Logger logger = LogManager.getLogger("com.github.dustyace.lab6");
-    static HashSet<Route> routes = new HashSet<>();
+    static final Set<Route> routes = Collections.synchronizedSet(new HashSet<Route>());
     static java.time.LocalDateTime initTime = java.time.LocalDateTime.now();
 
     /**
@@ -29,8 +32,10 @@ public class CollectionHandler {
 
     public static Route[] clear(HashSet<Long> idsToRemove) {
         HashSet<Route> removed = new HashSet<>();
-        for (long id: idsToRemove) {
-            removed.add(remove_by_id(id));
+        synchronized (routes) {
+            for (long id: idsToRemove) {
+                removed.add(removeById(id));
+            }
         }
         Route[] r = removed.toArray(new Route[0]);
         OutputHandler.message("Collection cleared, removed %s routes.\n", r.length);
@@ -47,7 +52,7 @@ public class CollectionHandler {
      * Removes a {@code Route} with the specified id from the collection.
      * @param id id of the object to be removed, if present
      */
-    public static Route remove_by_id(Long id) {
+    public static Route removeById(Long id) {
         Route r = find_by_id(id);
         if (r != null) {
             routes.remove(r);
@@ -57,44 +62,14 @@ public class CollectionHandler {
         return r;
     }
 
-    public static Route[] update_id(Long id, Route r_new_val) {
-        Route r_old = find_by_id(id);
-        if (r_old == null) {
-            logger.trace("No route updated");
-            return null;
-        }
-        Route rc = r_old.clone();
-        routes.remove(r_old);
-        r_old.update(r_new_val);
-        routes.add(r_old);
-        logger.trace( "Route {} updated", r_old );
-        return new Route[]{rc, r_old.update(r_new_val)};
-    }
-
-    /**
-     * Adds a new {@code Route} to the collection
-     * if it's less than all other present shared.elements.
-     * @param newRoute Route object to attempt to add.
-     */
-    public static boolean add_if_min(Route newRoute) {
-        for (Route r: routes) {
-            if (newRoute.compareTo(r) > 0) {
-                logger.trace("Route {} wasn't added, not min", newRoute);
-                OutputHandler.message("Route wasn't added, isn't min.");
-                return false;
-            }
-        }
-        add(newRoute);
-        OutputHandler.message("Route added!");
-        return true;
-    }
-
     public static void add(Route... newRoutes) {
-        for (Route r: newRoutes) {
-            routes.add(r);
-            logger.trace("Route {} added", r);
-            OutputHandler.message("Added %s", r);
-        } //can't use stream api cause maxid needs to change during iteration
+        synchronized (routes) {
+            for (Route r: newRoutes) {
+                routes.add(r);
+                logger.trace("Route {} added", r);
+                OutputHandler.message("Added %s", r);
+            } //can't do stream api bc I want logging + output for each route
+        }
     }
 
     public static void add(Route[] r, boolean updateId) {
@@ -106,29 +81,16 @@ public class CollectionHandler {
      * Prints a set of all {@code Route.distance} values
      */
     public static void print_unique_distance() {
-        HashSet<Long> unqDist = new HashSet<>();
+        HashSet<Long> unqDist;
+        synchronized (routes) {
+            unqDist = routes.stream()
+                    .map(Route::getDistance)
+                    .collect(Collectors.toCollection(HashSet::new));
+        }
         for (Route r: routes) {
             unqDist.add(r.getDistance());
         }
         OutputHandler.message("Уникальные значения поля Distance:\n%s", unqDist);
-    }
-
-    /**
-     * Removes all Routes greater than specified Route.
-     * @param newRoute Route to compare other objects with
-     */
-    public static Route[] remove_greater(Route newRoute) {
-        HashSet<Route> toRemove = new HashSet<>();
-        for (Route r: routes) {
-            if (newRoute.compareTo(r) < 0) {
-                toRemove.add(r);
-            }
-        }
-        for (Route r: toRemove) {
-            routes.remove(r);
-            OutputHandler.message("Route '%s' removed.", r);
-        }
-        return toRemove.toArray(new Route[0]);
     }
 
     /**
@@ -147,14 +109,15 @@ public class CollectionHandler {
      * @return Route with specified id or {@code null}, if such doesn't exist
      */
     private static Route find_by_id(Long id) {
-        for (Route r: routes) {
-            if (r.getId().equals(id)) {
-                return r;
-            }
+        Route r;
+        synchronized (routes) {
+            r = routes.stream().filter(rt -> rt.getId()==id).findAny().orElse(null);
         }
-        OutputHandler.message("No Route with id '%s' found.", id);
-        logger.trace("No Route with id '{}' found.", id);
-        return null;
+        if (r==null) {
+            OutputHandler.message("No Route with id '%s' found.", id);
+            logger.trace("No Route with id '{}' found.", id);
+        }
+        return r;
     }
 
     /**
@@ -170,7 +133,7 @@ public class CollectionHandler {
     /**
      * @return the collection
      */
-    public static HashSet<Route> getRoutes() {
+    public static Set<Route> getRoutes() {
         return routes;
     }
 
@@ -179,6 +142,9 @@ public class CollectionHandler {
      * @param r new collection
      */
     public static void setRoutes(HashSet<Route> r) {
-        routes = r;
+        synchronized (routes) {
+            routes.clear();
+            routes.addAll(r);
+        }
     }
 }

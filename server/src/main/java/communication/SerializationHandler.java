@@ -9,7 +9,8 @@ import shared.responses.Response;
 
 import java.nio.charset.StandardCharsets;
 
-public class SerializationHandler {
+public class SerializationHandler  {
+
     public static Request deserialize_request(byte[] arr) throws JsonProcessingException{
         String req = new String(arr, StandardCharsets.UTF_8);
         ObjectMapper om = JsonMapper.builder()
@@ -18,7 +19,6 @@ public class SerializationHandler {
         om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             Request oc = om.readValue(req, Request.class); //this throws jpe
             return oc;
-
     }
 
     public static byte[] serialize_response(Response r) {
