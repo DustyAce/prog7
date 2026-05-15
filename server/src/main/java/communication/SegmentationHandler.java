@@ -12,13 +12,14 @@ import java.util.List;
 public class SegmentationHandler {
     private static final Logger logger = LogManager.getLogger("com.github.dustyace.lab6");
     private static final int segmentSize = 2048;
+    LinkedList<Void> abc = new LinkedList<>();
     public static LinkedList<byte[]> segment(byte[] msg) {
 
         LinkedList<byte[]> ret = new LinkedList<>();
-        if (msg.length<segmentSize) {
-            ret.add(msg);
-            return ret;
-        }
+//        if (msg.length<segmentSize) {
+//            ret.add(msg);
+//            return ret;
+//        }
 
         int start = 0;
         while (start < msg.length) {

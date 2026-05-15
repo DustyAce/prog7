@@ -1,5 +1,6 @@
 import Exceptions.BadIdException;
 import communication.CommunicationHandler;
+import communication.UserStatus;
 import shared.commands.CommandEnum;
 import shared.requests.CommandRequest;
 import shared.requests.Request;
@@ -18,12 +19,14 @@ class Main {
                 if (req == null) { System.out.println("No such command. Try 'help'"); continue; }
 
                 if (req instanceof CommandRequest cr) {
-                    if (cr.getCommand() == CommandEnum.EXIT) {System.out.println("k bye"); System.exit(0);}
-                    if (cr.getCommand() == CommandEnum.EXECUTE_SCRIPT) {
-                        ExecuteScript.execute( new File(cr.getArgs()[0]) );
-                        continue;
+                    switch (cr.getCommand()) {
+                        case EXIT -> {System.out.println("k bye"); System.exit(0);}
+                        case EXECUTE_SCRIPT -> {
+                            ExecuteScript.execute( new File(cr.getArgs()[0]) );
+                            continue;
+                        }
+                        case WHOAMI -> { System.out.printf("You are '%s'.\n", UserStatus.getUsername()); continue; }
                     }
-                    //System.out.println(cr.getUsername());
                 }
                 CommunicationHandler.request(req);
         }

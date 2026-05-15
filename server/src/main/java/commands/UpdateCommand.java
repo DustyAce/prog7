@@ -19,7 +19,9 @@ public class UpdateCommand implements Command, Undoable {
     public void execute(CommandRequest cr) {
         try {
             if (DatabaseHandler.update(cr.getRoute(), cr.getUsername() )) {
+                CollectionHandler.update(cr.getRoute());
                 Invoker.addToRouteHistory(cr.getRoute());
+                OutputHandler.message("Successfully updated.");
             }
         } catch (NumberFormatException e) {
             OutputHandler.message("Invalid id");

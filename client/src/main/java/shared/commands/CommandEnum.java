@@ -23,5 +23,6 @@ public enum CommandEnum {
     UPDATE,
 
     LOGIN,
-    REGISTER;
+    REGISTER,
+    WHOAMI;
 }

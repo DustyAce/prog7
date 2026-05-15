@@ -44,7 +44,7 @@ public class Location implements Cloneable, Serializable {
 
     public void setValuesInStatement(PreparedStatement ps) throws SQLException {
         ps.clearParameters();
-        ps.setLong(1, x);
+        ps.setObject(1, x);
         ps.setFloat(2, y);
         ps.setFloat(3, z);
         ps.setString(4, name);

@@ -36,7 +36,7 @@ public class Coordinates implements Cloneable, Serializable {
 
     public void setValuesInStatement(PreparedStatement ps) throws SQLException {
         ps.clearParameters();
-        ps.setLong(1, x);
+        ps.setObject(1, x);
         ps.setFloat(2, y);
     }
 

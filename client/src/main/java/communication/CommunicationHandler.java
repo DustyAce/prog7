@@ -71,7 +71,6 @@ public class CommunicationHandler {
     private static void establishConnection(Request req) throws IOException {
         host = InetAddress.getLocalHost();
         addr = new InetSocketAddress(host, UserStatus.getServerPort());
-        System.out.println(UserStatus.getServerPort());
         dc = DatagramChannel.open();
         dc.configureBlocking(false);
         dc.bind(null);
@@ -86,27 +85,16 @@ public class CommunicationHandler {
         dc.send(buf, addr);
         int attempts = 0;
         while (true) {
-            int i = selector.select(5_000);
+            int i = selector.select(1_000 + attempts * 500);
             if (i == 0) {
                 if (++attempts > 3) { System.out.println("Server not responding :("); return false; }
-                if (attempts > 2) { UserStatus.resetServerPort(); addr = new InetSocketAddress(host, UserStatus.getServerPort()); }
+                if (attempts == 2) { UserStatus.resetServerPort(); addr = new InetSocketAddress(host, UserStatus.getServerPort()); }
                 System.out.printf("Couldn't reach server, attempt %s...\n", attempts+1);
                 buf = ByteBuffer.wrap(message);
                 dc.send(buf, addr);
             }  else {break;}
         }
         return true;
-    }
-
-    public static void request(CommandRequest req) {
-        try {
-            establishConnection(req);
-            if (!sendRequest()) {return;}
-            receiveResponse();
-            processResponse(req);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 
@@ -120,13 +108,13 @@ public class CommunicationHandler {
         int i;
         InetSocketAddress adr = null;
         do {
-            i = selector.select(10000);
             segment_buffer = ByteBuffer.allocate(bufsize);
-            if (i != 0) { adr = (InetSocketAddress) dc.receive(segment_buffer);}
+            i = selector.select(1000);
+            adr = (InetSocketAddress) dc.receive(segment_buffer);
             responseBuffer.add(segment_buffer.array());
-        } while (segment_buffer.array()[bufsize-2] != 0);
+        } while (segment_buffer.array()[bufsize-1] != 0);
+        if (adr != null) {UserStatus.setServerPort( adr.getPort() );}
 
-        UserStatus.setServerPort( adr.getPort() );
 
         desegmentedResponse = SegmentationHandler.desegment(responseBuffer);
     }

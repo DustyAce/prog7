@@ -29,7 +29,7 @@ public class RequestReader implements Runnable{
         logger.info("Opened a new thread at {}", ds.getLocalPort());
         readRequest(dp.getData());
         try {
-            ds.setSoTimeout(60_000);
+            ds.setSoTimeout(5*60_000);
             while (true) {
                 ds.receive(dp);
                 readRequest(dp.getData());

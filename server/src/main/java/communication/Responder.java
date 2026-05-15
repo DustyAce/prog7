@@ -56,6 +56,8 @@ public class Responder implements Runnable{
     }
 
     private void sendResponse(byte[] message) throws IOException {
+        logger.debug("sending response ({}) to {}:{}", message.length, dp.getAddress(), dp.getPort());
+        logger.debug(message[0]);
         DatagramPacket dpr = new DatagramPacket(message, message.length, dp.getAddress(), dp.getPort());
         ds.send(dpr);
     }

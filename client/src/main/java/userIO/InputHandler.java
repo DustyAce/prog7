@@ -64,7 +64,7 @@ public class InputHandler {
             Long id = Long.parseLong(ret.getArgs()[0]);
             CommunicationHandler.request( new CheckRouteExistsRequest(id, ret.getUsername()));
             if ( !CheckRouteExistsRequest.getResult() ) {
-                System.out.println( "Route does not exist." ); throw new BadIdException("No route with given id");
+                System.out.println( "Route does not exist/insufficent perms." ); throw new BadIdException("No route with given id");
             }
         } catch (NumberFormatException e) { throw new BadIdException("Invalid id, could not parse to Long"); }
     }

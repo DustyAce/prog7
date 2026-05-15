@@ -62,6 +62,12 @@ public class CollectionHandler {
         return r;
     }
 
+    public static void update(Route r) {
+        Route old = find_by_id(r.getId());
+        routes.remove(old);
+        routes.add(r);
+    }
+
     public static void add(Route... newRoutes) {
         synchronized (routes) {
             for (Route r: newRoutes) {

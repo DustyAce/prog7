@@ -2,6 +2,7 @@ package handlers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import shared.elements.Location;
 import shared.elements.Route;
 
 import java.math.BigInteger;
@@ -63,44 +64,70 @@ public class DatabaseHandler {
         }
     }
 
+    private static int fetchReturnedIntId(PreparedStatement ps) throws SQLException{
+        ResultSet rs = ps.getResultSet();
+        rs.next();
+        return rs.getInt(1);
+    }
+
+    private static long fetchReturnedLongId(PreparedStatement ps) throws SQLException{
+        ResultSet rs = ps.getResultSet();
+        rs.next();
+        return rs.getInt(1);
+    }
+
+    private static int insertCoordinates(Route r) throws SQLException{
+        PreparedStatement ps_coords = db.prepareStatement("INSERT INTO coordinates(x,y) VALUES (?, ?) RETURNING id");
+        r.getCoordinates().setValuesInStatement(ps_coords);
+        ps_coords.execute();
+        logger.debug("inserted coords {}", r.getCoordinates());
+        return fetchReturnedIntId(ps_coords);
+    }
+
+    private static long insertRoute(Route r, String owner, int coordsId) throws SQLException{
+        logger.debug("attempt to insert route {} w/ owner {} and coords {}", r, owner, coordsId);
+        PreparedStatement ps_route = db.prepareStatement(
+                "INSERT INTO route(name,coordinates,distance,owner) VALUES (?, ?, ?, (SELECT id FROM users WHERE name ILIKE ?)) RETURNING id");
+        ps_route.setString(1,r.getName());
+        ps_route.setInt(2, coordsId);
+        ps_route.setLong(3,r.getDistance());
+        ps_route.setString(4,owner);
+        ps_route.execute();
+        logger.debug("Inserted route {}", r);
+        return fetchReturnedLongId(ps_route);
+    }
+
+    private static int insertLocation(Location l) throws SQLException {
+        PreparedStatement insertLocation = db.prepareStatement("INSERT INTO location(x,y,z,name) VALUES (?, ?, ?, ?) RETURNING id");
+        l.setValuesInStatement(insertLocation);
+        insertLocation.execute();
+        logger.debug("Inserted location {}", l);
+        return fetchReturnedIntId(insertLocation);
+    }
+
     public static Long insert(Route r, String owner) {
         try {
-            PreparedStatement ps_coords = db.prepareStatement("INSERT INTO coordinates(x,y) VALUES (?, ?)");
-            r.getCoordinates().setValuesInStatement(ps_coords);
-            ps_coords.execute();
+
+            int coordsId = insertCoordinates(r);
+            long routeId = insertRoute(r, owner, coordsId);
 
 
-            PreparedStatement ps_route = db.prepareStatement(
-                    "INSERT INTO route(name,coordinates,distance,owner) VALUES " +
-                    "(?, (SELECT max(id) FROM coordinates), ?, (SELECT id FROM users WHERE name ILIKE ?));");
-            ps_route.setString(1,r.getName());
-            ps_route.setLong(2,r.getDistance());
-            ps_route.setString(3,owner);
-            ps_route.execute();
-
-            PreparedStatement insertLocation = db.prepareStatement("INSERT INTO location(x,y,z,name) VALUES (?, ?, ?, ?)");
             if (r.getFrom() != null) {
-                r.getFrom().setValuesInStatement(insertLocation);
-                insertLocation.execute();
-                db.createStatement().execute(
-                        "UPDATE route SET \"from\"=(SELECT max(id) FROM location) WHERE id=(SELECT max(id) FROM route);"
-                );
+                int fromId = insertLocation(r.getFrom());
+                db.createStatement().execute(String.format(
+                        "UPDATE route SET \"from\"=%s WHERE id=%s;", fromId, routeId
+                ));
             }
 
             if (r.getTo() != null) {
-                r.getTo().setValuesInStatement(insertLocation);
-                insertLocation.execute();
-                db.createStatement().execute(
-                        "UPDATE route SET \"to\"=(SELECT max(id) FROM location) WHERE id=(SELECT max(id) FROM route);"
-                );
+                int toId = insertLocation(r.getTo());
+                db.createStatement().execute(String.format(
+                        "UPDATE route SET \"to\"=%s WHERE id=%s;", toId, routeId
+                ));
             }
 
             db.commit();
-            Statement s = db.createStatement();
-            s.execute("SELECT max(id) FROM route;");
-            ResultSet rs = s.getResultSet();
-            rs.next();
-            return rs.getLong(1);
+            return routeId;
         } catch (SQLException e) {
             logger.error("Insertion unsuccessfull!");
             logger.debug(e.getMessage());
@@ -179,7 +206,7 @@ public class DatabaseHandler {
             ps.setString(1,user);
             ps.setLong(2, id);
             ps.execute();
-            boolean ret= ps.getResultSet().next();
+            boolean ret = ps.getResultSet().next();
             logger.debug("Checking ownership of {} - {}... Result: {}", id, user, ret);
             return ret;
         } catch ( SQLException e ) {
@@ -222,13 +249,37 @@ public class DatabaseHandler {
                 OutputHandler.message("You are not the owner of this object!");
                 return false;
             }
-            remove(r.getId(), owner);
-            insert(r,owner);
-            db.createStatement().execute(String.format(
-                    "UPDATE route SET id=%s WHERE id = (SELECT max(id) FROM route)",
-                    r.getId()
-                    )
-            );
+            int coordsId = insertCoordinates(r);
+            PreparedStatement updateRoute = db.prepareStatement(
+                    """
+                    UPDATE route SET
+                    name = ?,
+                    coordinates = ?,
+                    distance = ?
+                    WHERE id=?;
+                    """ );
+            updateRoute.setString(1, r.getName());
+            updateRoute.setInt(2, coordsId);
+            updateRoute.setLong(3, r.getDistance());
+            updateRoute.setLong(4, r.getId());
+            updateRoute.execute();
+
+            long routeId = r.getId();
+
+            System.out.println(r.more());
+            if (r.getFrom() != null) {
+                int fromId = insertLocation(r.getFrom());
+                db.createStatement().execute(String.format(
+                        "UPDATE route SET \"from\"=%s WHERE id=%s;", fromId, routeId
+                ));
+            }
+
+            if (r.getTo() != null) {
+                int toId = insertLocation(r.getTo());
+                db.createStatement().execute(String.format(
+                        "UPDATE route SET \"to\"=%s WHERE id=%s;", toId, routeId
+                ));
+            }
 
             db.commit();
             return true;
@@ -252,6 +303,7 @@ public class DatabaseHandler {
         return sb.toString();
 
     }
+
 
 
     public static boolean checkUser(String username, String password) {

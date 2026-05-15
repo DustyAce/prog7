@@ -49,7 +49,7 @@ public class Route implements Comparable<Route>, Cloneable{
         this.coordinates = new Coordinates();
 
         if (InputHandler.ynPrompt("Add 'from' Location?")) { this.from = new Location(); }
-        if (InputHandler.ynPrompt("Add 'to' Location?")) { this.from = new Location(); }
+        if (InputHandler.ynPrompt("Add 'to' Location?")) { this.to = new Location(); }
 
         this.distance = InputHandler.longInput("distance",
                 new InputValidator<Long>()
